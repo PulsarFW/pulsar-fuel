@@ -1,0 +1,48 @@
+name: Create release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+permissions:
+  contents: write
+
+jobs:
+  create-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install zip
+        run: sudo apt install zip
+
+      - name: Get latest code
+        uses: actions/checkout@v4
+
+      - name: Bundle files
+        run: |
+          mkdir -p ./temp/pulsar-fuel
+          cp ./{README.md,fxmanifest.lua,config.lua} ./temp/pulsar-fuel
+          cp -r ./{client,server,shared} ./temp/pulsar-fuel
+          cd ./temp && zip -r ../pulsar-fuel.zip ./pulsar-fuel
+
+      - name: Create release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: "PULSAR-FUEL ${{ github.ref_name }}"
+          body: |
+            ![Pulsar Framework](https://r2.fivemanage.com/GPYOH8Hq4GPyAY7czrgLe/pulsarbanner.png)
+
+            ## PULSAR-FUEL ${{ github.ref_name }}
+
+            Vehicle fuel system for Pulsar Framework — fuel consumption, refueling at gas stations, and jerry can support.
+
+            ### Installation
+            1. Download `pulsar-fuel.zip` below
+            2. Extract into your server's `resources` folder
+            3. Add `ensure pulsar-fuel` to your `server.cfg`
+
+            ---
+            ![Pulsar Framework](https://img.shields.io/badge/Pulsar-Framework-7c3aed?style=flat-square)
+            ![Built for FiveM](https://img.shields.io/badge/Built_for-FiveM-F40552?style=flat-square)
+          files: pulsar-fuel.zip
+          prerelease: false
