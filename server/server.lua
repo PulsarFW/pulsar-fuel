@@ -15,6 +15,16 @@ AddEventHandler('onResourceStart', function(resource)
 				while true do
 					Wait(1000 * 60 * 10)
 					if depositData.amount > 0 then
+						if not bankAcc then
+							local f = exports['pulsar-finance']:AccountsGetOrganization("dgang")
+							if f and f.Account then
+								bankAcc = f.Account
+							else
+								exports['pulsar-core']:LoggerWarn("Fuel", "Skipping deposit; organization account dgang is unavailable")
+								goto continue
+							end
+						end
+
 						exports['pulsar-core']:LoggerTrace(
 							"Fuel",
 							string.format("Depositing ^2$%s^7 To ^3%s^7", math.abs(depositData.amount), bankAcc)
@@ -33,6 +43,7 @@ AddEventHandler('onResourceStart', function(resource)
 							transactions = 0,
 						}
 					end
+					::continue::
 				end
 			end)
 			threading = true
@@ -40,8 +51,10 @@ AddEventHandler('onResourceStart', function(resource)
 
 		Wait(2000)
 		local f = exports['pulsar-finance']:AccountsGetOrganization("dgang")
-		if f ~= true then
+		if f and f.Account then
 			bankAcc = f.Account
+		else
+			exports['pulsar-core']:LoggerWarn("Fuel", "Organization account not found for dgang; deposits will retry once account becomes available")
 		end
 	end
 end)
