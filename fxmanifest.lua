@@ -1,7 +1,7 @@
 fx_version("cerulean")
 lua54("yes")
 games({ "gta5" })
-version("1.0.1")
+version "1.0.2"
 client_script("@pulsar-core/exports/cl_error.lua")
 client_script("@pulsar-pwnzor/client/check.lua")
 
