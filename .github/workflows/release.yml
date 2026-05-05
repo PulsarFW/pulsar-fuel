@@ -12,18 +12,14 @@ jobs:
   create-release:
     runs-on: ubuntu-latest
     steps:
-      - name: Install zip
-        run: sudo apt install zip
-
       - name: Get latest code
         uses: actions/checkout@v4
 
       - name: Bundle files
         run: |
-          mkdir -p ./temp/pulsar-fuel
-          cp ./{README.md,fxmanifest.lua,config.lua} ./temp/pulsar-fuel
-          cp -r ./{client,server,shared} ./temp/pulsar-fuel
-          cd ./temp && zip -r ../pulsar-fuel.zip ./pulsar-fuel
+          mkdir -p staging/pulsar-fuel
+          rsync -a --exclude='.github' --exclude='node_modules' --exclude='staging' . staging/pulsar-fuel/
+          cd staging && zip -r ../pulsar-fuel.zip pulsar-fuel/
 
       - name: Create release
         uses: softprops/action-gh-release@v2
