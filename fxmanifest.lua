@@ -1,20 +1,29 @@
-fx_version("cerulean")
-lua54("yes")
-games({ "gta5" })
-version "1.0.2"
-client_script("@pulsar-core/exports/cl_error.lua")
-client_script("@pulsar-pwnzor/client/check.lua")
+fx_version 'cerulean'
+games({ 'gta5' })
+
+name 'Pulsar Fuel'
+description 'Vehicle fuel consumption and gas station refueling'
+author 'Artmines - maintained for Pulsar Framework'
+url 'https://pulsarframe.work'
+version 'v1.0.0'
+
+version_check 'yes'
+github 'https://github.com/PulsarFW/pulsar_fuel'
+
+client_script '@pulsar_core/components/cl_error.lua'
+shared_script '@pulsar_core/core/sh_pulsar.lua'
+client_script '@pulsar_pwnzor/client/check.lua'
 
 client_scripts({
-  "config.lua",
-  "client/*.lua",
+	'config.lua',
+	'shared/*.lua',
+	'client/*.lua',
 })
 
 server_scripts({
-  "config.lua",
-  "server/*.lua",
+	'config.lua',
+	'shared/*.lua',
+	'server/*.lua',
 })
 
-shared_scripts({
-  "shared/**/*.lua",
-})
+lua54 'yes'
