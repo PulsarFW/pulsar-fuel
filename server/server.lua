@@ -38,8 +38,10 @@ CreateThread(function()
 
 	Wait(2000)
 	local f = plsr.Banking.Accounts:GetOrganization("dgang")
-	if f ~= true then
+	if f then
 		bankAcc = f.Account
+	else
+		plsr.Logger:Warn("Fuel", "Organization bank account for 'dgang' not ready yet (normal on first server start before pulsar_finance seeds accounts), skipping until next restart")
 	end
 end)
 
